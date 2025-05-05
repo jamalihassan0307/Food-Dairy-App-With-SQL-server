@@ -1,6 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:food_dairy_app/model.dart/RecppeModel.dart';
-import 'package:food_dairy_app/sql/sql.dart';
 import 'package:food_dairy_app/screen/loginScreen.dart';
 import 'package:food_dairy_app/widget/theme/app_theme.dart';
 import 'package:flutter/material.dart';

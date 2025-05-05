@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_dairy_app/sql/sqllite.dart';
 import 'package:food_dairy_app/screen/loginScreen.dart';
 import 'package:food_dairy_app/screen/addfood.dart';
 import 'package:food_dairy_app/screen/nev_bar/profile.dart';

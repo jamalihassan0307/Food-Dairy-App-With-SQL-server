@@ -1,6 +1,5 @@
 // ignore_for_file: file_names
 
-import 'dart:convert';
 
 import 'package:food_dairy_app/widget/constants/staticdata.dart';
 
