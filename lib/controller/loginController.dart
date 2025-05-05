@@ -11,58 +11,51 @@ class LoginController extends GetxController {
   static LoginController get to => Get.find();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  Future getUser(String email, String password) async {
-    print("dataaaa");
-   try {
-     await SQL.get("Select * from users where email = '$email' AND password = '$password'").then((map) async {
-    
-   
-   
-      UserModel? model;
-      try {
-          print("84965784$map");
-          if (map[0]!=null) {
-                 
-       model =await UserModel( 
 
-      username: map[0]['username'],
-      id: map[0]['id'] as String ,
-      email: map[0]['email'] as String ,
-      phone: map[0]['phone'] as String ,
-      dob: map[0]['dob']  as String,
-      image: map[0]['image'] as String,
-      password: map[0]['password']  as String,
-    );
-  
-    print("sofjnsngfg$model");
-      print("dskjfhj$model");
-      StaticData.model = model;
-      StaticData.id = model.id;
-      update();
-      StaticData.storeCredentials(email, password);
-      cleardata();  
- }
- else{
-  Fluttertoast.showToast(msg: "User Not Found !",backgroundColor: Colors.red,textColor: Colors.white,gravity: ToastGravity.BOTTOM,fontSize: 17,timeInSecForIosWeb: 1,toastLength: Toast.LENGTH_LONG,);
-  
- }
-      } catch (e) {
-        print("edfrergj$e");
-      } 
-    
-      
-  });
-   } catch (e) {
-     print("fdsgndfjgh$e");
-   }
-  
+  Future<void> getUser(String email, String password) async {
+    try {
+      List<Map<String, dynamic>> result = await SQL.get(
+          "SELECT * FROM users WHERE email = '$email' AND password = '$password'");
 
-   
-   
+      if (result.isNotEmpty) {
+        UserModel model = UserModel(
+          username: result[0]['username'],
+          id: result[0]['id'],
+          email: result[0]['email'],
+          phone: result[0]['phone'],
+          dob: result[0]['dob'],
+          image: result[0]['image'],
+          password: result[0]['password'],
+        );
 
-
-   
-   
+        StaticData.model = model;
+        StaticData.id = model.id;
+        update();
+        StaticData.storeCredentials(email, password);
+        cleardata();
+      } else {
+        Fluttertoast.showToast(
+          msg: "User Not Found !",
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 17,
+          timeInSecForIosWeb: 1,
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
+    } catch (e) {
+      print("Error in login: $e");
+      Fluttertoast.showToast(
+        msg: "An error occurred. Please try again!",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 17,
+        timeInSecForIosWeb: 1,
+        toastLength: Toast.LENGTH_LONG,
+      );
+    }
   }
 
   cleardata() {
