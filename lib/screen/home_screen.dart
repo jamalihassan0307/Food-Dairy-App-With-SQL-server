@@ -4,7 +4,6 @@ import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:food_dairy_app/controller/recipe_repository.dart';
 import 'package:food_dairy_app/sql/sql.dart';
-import 'package:food_dairy_app/sql/sqllite.dart';
 import 'package:food_dairy_app/model.dart/RecppeModel.dart';
 import 'package:food_dairy_app/screen/nev_bar/page1.dart';
 import 'package:food_dairy_app/screen/nev_bar/page2.dart';
@@ -26,27 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  getdata() {
+  getdata() async {
     RecipeRepository.to.updateyourrecipe([]);
 
     try {
-       SQL
-        .get(
-            "select * from dbo.recipes ")
-        .then((value) {
-          print("valueeeeeeeeeeeeeeee${value}");  List<Map<String, dynamic>> tempResult =
-          value.cast<Map<String, dynamic>>();
-            List<Recipe> recipe = List.generate(tempResult.length, (i) {      
-
-            return Recipe.fromMap(tempResult[i]);
-            });
-    RecipeRepository.to.updateyourrecipe(recipe);
-   
-        });
-      
+      List<Map<String, dynamic>> result = await SQL.get("SELECT * FROM recipes");
+      List<Recipe> recipes = result.map((map) => Recipe.fromMap(map)).toList();
+      RecipeRepository.to.updateyourrecipe(recipes);
     } catch (e) {
-      print("errorrr     $e");
-      return null;
+      print("Error loading recipes: $e");
     }
 
     loadRecipes();
