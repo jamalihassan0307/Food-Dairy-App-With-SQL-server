@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_dairy_app/sql/sql.dart';
-import 'package:food_dairy_app/sql/sqllite.dart';
 import 'package:food_dairy_app/screen/loginScreen.dart';
 import 'package:get/get.dart';
 import 'package:food_dairy_app/model.dart/UserModel.dart';
@@ -13,51 +12,59 @@ class SignupController extends GetxController {
   static SignupController get to => Get.find();
 
   TextEditingController username = TextEditingController();
-  TextEditingController email =
-      TextEditingController();
+  TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController dob = TextEditingController();
 
-
-
   @override
   void onInit() {
-    
     super.onInit();
   }
 
-
   Future<void> register(BuildContext context) async {
-   
     if (username.text.isNotEmpty &&
         email.text.isNotEmpty &&
         password.text.isNotEmpty &&
         phone.text.isNotEmpty &&
         dob.text.isNotEmpty) {
-      String id = DateTime.now().millisecondsSinceEpoch.toString();
-      UserModel model = UserModel(
-        password: password.text,
-        image: await StaticData.assetToF("assets/images/download.png"),
-        username: username.text,
-        id: id,
-        email: email.text,
-        phone: phone.text,
-        dob: dob.text,
-      );
-SQL.Update("INSERT INTO dbo.users VALUES (${model.toMap()})");
-     
+      try {
+        String id = DateTime.now().millisecondsSinceEpoch.toString();
+        UserModel model = UserModel(
+          password: password.text,
+          image: await StaticData.assetToF("assets/images/download.png"),
+          username: username.text,
+          id: id,
+          email: email.text,
+          phone: phone.text,
+          dob: dob.text,
+        );
 
-      StaticData.model = model;
-      StaticData.id = id;
-      update();
-      clearField();
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
-        ),
-      );
+        await SQL.post("INSERT INTO users VALUES (${model.toMap()})");
+
+        StaticData.model = model;
+        StaticData.id = id;
+        update();
+        clearField();
+        
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
+          ),
+        );
+      } catch (e) {
+        print("Error in registration: $e");
+        Fluttertoast.showToast(
+          msg: "An error occurred. Please try again!",
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          gravity: ToastGravity.BOTTOM,
+          fontSize: 17,
+          timeInSecForIosWeb: 1,
+          toastLength: Toast.LENGTH_LONG,
+        );
+      }
     } else {
       Fluttertoast.showToast(
         msg: "Please fill all fields!",
@@ -69,18 +76,6 @@ SQL.Update("INSERT INTO dbo.users VALUES (${model.toMap()})");
         toastLength: Toast.LENGTH_LONG,
       );
     }
-    // } catch (e) {
-    //   print("Error in registration: $e");
-    //   Fluttertoast.showToast(
-    //     msg: "An error occurred. Please try again later!",
-    //     backgroundColor: Colors.red,
-    //     textColor: Colors.white,
-    //     gravity: ToastGravity.BOTTOM,
-    //     fontSize: 17,
-    //     timeInSecForIosWeb: 1,
-    //     toastLength: Toast.LENGTH_LONG,
-    //   );
-    // }
   }
 
   void clearField() {
