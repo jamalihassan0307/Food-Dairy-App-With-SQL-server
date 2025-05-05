@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:food_dairy_app/sql/sql.dart';
-import 'package:food_dairy_app/sql/sqllite.dart';
 import 'package:food_dairy_app/model.dart/RecppeModel.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,8 +20,10 @@ class RecipeRepository extends GetxController {
   TextEditingController pre = TextEditingController();
   int index = 0;
   File? image;
-  void delete(Recipe recipe) {
+
+  void delete(Recipe recipe) async {
     yourrecipe!.removeWhere((item) => item.id == recipe.id);
+    await SQL.Update("DELETE FROM recipes WHERE id = '${recipe.id}'");
     update();
   }
 
@@ -62,21 +63,22 @@ class RecipeRepository extends GetxController {
           calories: cal.text,
           protein: protein.text,
           prepTime: pre.text);
-          await SQL.post("INSERT INTO dbo.recipes VALUES  (${model.toMap()})").then((value) {
- Fluttertoast.showToast(
-          msg: "Add Successfully !",
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-          gravity: ToastGravity.BOTTOM,
-          fontSize: 17,
-          timeInSecForIosWeb: 1,
-          toastLength: Toast.LENGTH_LONG,
-        );
-          });
+
+      await SQL.post("INSERT INTO recipes VALUES (${model.toMap()})");
       
-       
-       yourrecipe!.add(model);
-    
+      yourrecipe ??= [];
+      yourrecipe!.add(model);
+      
+      Fluttertoast.showToast(
+        msg: "Add Successfully !",
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        gravity: ToastGravity.BOTTOM,
+        fontSize: 17,
+        timeInSecForIosWeb: 1,
+        toastLength: Toast.LENGTH_LONG,
+      );
+      
       cleardata();
     } else {
       Fluttertoast.showToast(
@@ -93,7 +95,6 @@ class RecipeRepository extends GetxController {
 
   cleardata() {
     name.clear();
-    des.clear();
     des.clear();
     image = null;
     cal.clear();
