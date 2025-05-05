@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "648867441802",
+    "project_id": "stday-71c00",
+    "storage_bucket": "stday-71c00.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648867441802:android:74307aa58d19e87a65d173",
+        "android_client_info": {
+          "package_name": "com.example.day1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648867441802-ar1tsqg9jev4g8rdcu9seqn87pd0ejgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5XHf5nEYWrIyeTeoUocfuHg7cOe4GpU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648867441802-ar1tsqg9jev4g8rdcu9seqn87pd0ejgj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:648867441802:android:bb0efdefa1ec730765d173",
+        "android_client_info": {
+          "package_name": "com.example.notes_app_with_sql"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "648867441802-ar1tsqg9jev4g8rdcu9seqn87pd0ejgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5XHf5nEYWrIyeTeoUocfuHg7cOe4GpU0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "648867441802-ar1tsqg9jev4g8rdcu9seqn87pd0ejgj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
