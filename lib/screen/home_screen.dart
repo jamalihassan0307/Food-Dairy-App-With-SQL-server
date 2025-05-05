@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
 
-import 'package:button_navigation_bar/button_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:food_dairy_app/controller/recipe_repository.dart';
 import 'package:food_dairy_app/sql/sql.dart';
@@ -18,6 +17,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _currentIndex = 0;
+  final PageController _pageController = PageController();
+
   @override
   void initState() {
     Get.put(RecipeRepository());
@@ -39,48 +41,55 @@ class _HomeScreenState extends State<HomeScreen> {
     loadRecipes();
   }
 
-  PageController page = PageController();
-
-  var height, width;
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: PageView(
-        controller: page,
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
         children: const [
           Page1(),
           Page2(),
           SettingsScreen(),
         ],
       ),
-      bottomNavigationBar: ButtonNavigationBar(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(10),
-        ),
-        children: [
-          ButtonNavigationItem(
-            icon: const Icon(Icons.map_outlined),
-            onPressed: () {
-              page.jumpToPage(0);
-            },
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+            _pageController.animateToPage(
+              index,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map_outlined),
+            label: 'Home',
           ),
-          ButtonNavigationItem(
-            width: width * 0.3,
-            icon: const Icon(Icons.data_exploration_outlined),
-            onPressed: () {
-              page.jumpToPage(1);
-            },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.data_exploration_outlined),
+            label: 'Recipes',
           ),
-          ButtonNavigationItem(
-            icon: const Icon(Icons.person),
-            onPressed: () {
-              page.jumpToPage(2);
-            },
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Settings',
           ),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 }

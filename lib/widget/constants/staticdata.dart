@@ -82,24 +82,14 @@ class StaticData {
     String? email = prefs.getString('email');
     String? password = prefs.getString('password');
     if (email != null && password != null) {
-      LoginController.to
-          .getUser(
-        email,
-        password,
-      )
-          .then((value) {
-        if (value == true) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ),
-            (route) => true,
-          );
-        } else {}
-      });
-    } else {
-      print("null datya");
+      await LoginController.to.getUser(email, password);
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
+        (route) => true,
+      );
     }
     return {'email': email ?? '', 'password': password ?? ''};
   }
